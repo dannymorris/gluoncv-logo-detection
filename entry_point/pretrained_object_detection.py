@@ -40,6 +40,3 @@ def transform_fn(model, data, content_type, output_content_type):
     response_body = json.dumps(result)
     
     return response_body, output_content_type
-       
-if __name__ == '__main__':
-    train()
