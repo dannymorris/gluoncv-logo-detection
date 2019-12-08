@@ -18,7 +18,7 @@ class GroundTruthDetectionDataset(gluon.data.Dataset):
     """
     Custom Dataset to handle the GroundTruthDetectionDataset
     """
-    def __init__(self, label_path='label', data_path='data', split='train', task='bcbs-logos'):
+    def __init__(self, label_path='label', data_path='data', split='train', task='bcbs-logo-labeling'):
         """
         Parameters
         ---------
@@ -111,17 +111,17 @@ def train():
     from gluoncv import model_zoo, data, utils   
 
     # get the pretrained model and set classes to AWS
-    model = gcv.model_zoo.get_model('ssd_512_mobilenet1.0_custom', classes=["logo"], pretrained_base=False, transfer='voc')
+    model = gcv.model_zoo.get_model('ssd_512_mobilenet1.0_custom', classes=["BCBS"], pretrained_base=False, transfer='voc')
     
     #images and labels from Groundtruth are downloaded by Sagemaker into training instance
     train_dataset = GroundTruthDetectionDataset(split='train', 
                                                 label_path=os.environ["SM_CHANNEL_LABELS"],
                                                 data_path=os.environ["SM_CHANNEL_TRAIN"], 
-                                                task="bcbs-logos")
+                                                task="bcbs-logo-labeling")
     val_dataset = GroundTruthDetectionDataset(split='val', 
                                               label_path=os.environ["SM_CHANNEL_LABELS"], 
                                               data_path=os.environ["SM_CHANNEL_TRAIN"], 
-                                              task="bcbs-logos")
+                                              task="bcbs-logo-labeling")
     
     #define dataloader
     train_loader= get_dataloader(model, train_dataset, val_dataset, 512, 512, 16, 1)
